@@ -1,8 +1,15 @@
 # ZSH configuration and tuning
 
-Copy the `.zsh/` directory, `.zprofile`, and `.zshrc` into your home directory and start a new shell.
+## Installing
 
-## Prerequisites
+Run `./install.sh` and it'll install prereqs, back up your existing configuration, and put the new
+configs in place.
+
+### Manual installation
+
+If you'd rather not trust rando scripts off the internet, here's what the install script does:
+
+#### Install Prerequisites
 
 You'll need to install a few things to get full use of this.
 
@@ -16,6 +23,10 @@ It also contains some iTerm2-specific things that may or may not matter to you. 
 
 You will probably want to do the "optional" one-time setup steps for P10K as well
 (installing fonts, etc) or things might look a little weird.
+
+#### Install the ZSH configurations in place
+
+Copy the `.zsh/` directory, `.zprofile`, and `.zshrc` into your home directory and start a new shell.
 
 ## Configuring
 
