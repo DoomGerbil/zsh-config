@@ -6,10 +6,11 @@ Copy the `.zsh/` directory, `.zprofile`, and `.zshrc` into your home directory a
 
 You'll need to install a few things to get full use of this.
 
-* [Oh My ZSH](https://github.com/ohmyzsh/ohmyzsh)
-* [Powerline 10K](https://github.com/romkatv/powerlevel10k)
-* FZF - `brew install fzf`
-* Ripgrep - `brew install ripgrep`
+* First, install [Oh My ZSH](https://github.com/ohmyzsh/ohmyzsh#basic-installation)
+* Next, install using Oh My ZSH - [Powerline 10K](https://github.com/romkatv/powerlevel10k#oh-my-zsh)
+* Then use Homebrew to install FZF - `brew install fzf`
+* And Ripgrep - `brew install ripgrep`
+* And if you don't already have it, the `gcloud` CLI is useful as well - `brew install google-cloud-sdk`
 
 It also contains some iTerm2-specific things that may or may not matter to you. :shrug:
 
