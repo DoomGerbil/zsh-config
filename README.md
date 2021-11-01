@@ -1,9 +1,15 @@
-# How to install this
+# ZSH configuration and tuning
 
 Copy the `.zsh/` directory, `.zprofile`, and `.zshrc` into your home directory and start a new shell.
 
-You'll need to install [Oh My ZSH](https://github.com/ohmyzsh/ohmyzsh) and
-[Powerline 10K](https://github.com/romkatv/powerlevel10k) to get the full use of this configuration.
+## Prerequisites
+
+You'll need to install a few things to get full use of this.
+
+* [Oh My ZSH](https://github.com/ohmyzsh/ohmyzsh)
+* [Powerline 10K](https://github.com/romkatv/powerlevel10k)
+* FZF - `brew install fzf`
+* Ripgrep - `brew install ripgrep`
 
 It also contains some iTerm2-specific things that may or may not matter to you. :shrug:
 
