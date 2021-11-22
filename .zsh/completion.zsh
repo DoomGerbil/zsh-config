@@ -4,8 +4,8 @@
 local_completions_dir="${ZSHRC}/completions"
 FPATH="${FPATH}:${ZSHRC}/functions:${local_completions_dir}"
 
-# Rebuild the autocomplete cache regularly
-rm -f ~/.zcompdump
+# Rebuild the autocomplete cache if it's more than an hour old
+find ~/.zcompdump -type f -mtime +1h -exec rm -f {} \;
 
 autoload bashcompinit; bashcompinit
 autoload -Uz compinit; compinit
@@ -51,3 +51,8 @@ zstyle ':completion:*:*:kubectl:*' list-grouped false
 command -v "kustomize" >"/dev/null" && \
   rm -f "${local_completions_dir}/_kustomize" && \
   kustomize completion zsh > "${local_completions_dir}/_kustomize"
+
+# If stern (K8S log tailer) is installed, rebuild its completion functions
+command -v "stern" >"/dev/null" && \
+  rm -f "${local_completions_dir}/_stern" && \
+  stern --completion zsh > "${local_completions_dir}/_stern"
