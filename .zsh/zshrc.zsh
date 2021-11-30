@@ -61,7 +61,7 @@ HYPHEN_INSENSITIVE="true"
 plugins=()
 plugins+=(aliases)
 plugins+=(aws)
-plugins+=(bazel)
+# plugins+=(bazel)
 plugins+=(direnv)
 plugins+=(docker)
 plugins+=(fzf)
@@ -78,9 +78,6 @@ plugins+=(zsh-autosuggestions)
 plugins+=(zsh-syntax-highlighting)
 
 source "${ZSH}/oh-my-zsh.sh"
-
-# Make zsh shortcuts break on "/", like in Bash
-WORDCHARS='*?_-.[]~&;!#$%^(){}<>'
 
 # Configure some legacy Golang stuff
 export GOPATH="${HOME}/go"

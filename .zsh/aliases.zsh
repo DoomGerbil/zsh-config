@@ -20,16 +20,17 @@ alias gundo='git reset --soft HEAD~1'
 
 # Kube* tools
 alias k='kubectl'
-compdef kubectl k
+compdef kubectl=k
 
 alias kx='kubectx'
-compdef kubectx kctx=kubectx
+compdef kubectx
+compdef kctx=kubectx
 
 alias ks='kubens'
-compdef kubens ks
+compdef kubens=ks
 
 # Other stuff
 alias bazel='bazelisk'
-compdef bazelisk bazel
+compdef bazelisk=bazel
 
 alias presub='circle local presubmit --mode=autofix'
