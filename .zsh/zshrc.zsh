@@ -1,7 +1,10 @@
 #! /usr/bin/env zsh
 
-# Base helpers for PATH mangling
+# The location of the optional user-specific secrets helper
+# Not part of the config distribution
+USER_SECRETS_FILE="${USER_SECRETS_FILE:-${HOME}/.secrets.zsh}"
 
+# Base helpers for PATH mangling
 pathappend() {
   for ARG in "$@"
   do
@@ -19,16 +22,6 @@ pathprepend() {
     fi
   done
 }
-
-# Sets up FZF fuzzy finder if it's installed (brew install fzf)
-# If ripgrep is installed (brew install ripgrep) configures fzf to use it
-command -v "fzf" >"/dev/null" && \
-  export FZF_BASE="/usr/local/opt/fzf" && \
-  export DISABLE_FZF_AUTO_COMPLETION="false" && \
-  export DISABLE_FZF_KEY_BINDINGS="false" && \
-  export FZF_DEFAULT_OPTS='--height 40% --border' && \
-  command -v "rg" >"/dev/null" && \
-    export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
 
 # Enable Python for the platform repo
 export SCRIPT_FEATURE_FLAG_PYTHON=1
@@ -52,7 +45,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 [[ -r "${ZSHRC}/p10k.zsh" ]] && \
   source "${ZSHRC}/p10k.zsh"
 
-# Configure and activate omzsh
+# Configure oh-my-zsh
 COMPLETION_WAITING_DOTS="true"
 HYPHEN_INSENSITIVE="true"
 
@@ -61,7 +54,6 @@ HYPHEN_INSENSITIVE="true"
 plugins=()
 plugins+=(aliases)
 plugins+=(aws)
-# plugins+=(bazel)
 plugins+=(direnv)
 plugins+=(docker)
 plugins+=(fzf)
@@ -77,6 +69,20 @@ plugins+=(terraform)
 plugins+=(zsh-autosuggestions)
 plugins+=(zsh-syntax-highlighting)
 
+# Sets up FZF fuzzy finder if it's installed (brew install fzf)
+if command -v "fzf" >"/dev/null"; then
+  export FZF_BASE="/usr/local/opt/fzf"
+  export DISABLE_FZF_AUTO_COMPLETION="false"
+  export DISABLE_FZF_KEY_BINDINGS="false"
+  export FZF_DEFAULT_OPTS="--height 40% --border"
+
+  # If ripgrep is installed (brew install ripgrep) configure fzf to use it
+  if command -v "rg" >"/dev/null"; then
+      export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
+  fi
+fi
+
+# Activate oh-my-zsh
 source "${ZSH}/oh-my-zsh.sh"
 
 # Configure some legacy Golang stuff
@@ -87,23 +93,34 @@ export GOBIN="${GOPATH}/bin"
 pathprepend "${GOBIN}"
 pathprepend "/usr/local/sbin"
 pathprepend "${HOME}/bin"
-
-# Configure auto-completion
-[[ -r "${HOME}/.zsh/completion.zsh" ]] && \
-  source "${HOME}/.zsh/completion.zsh"
-
-# If we have a local SSH agent socket, use it.
-[[ -r "${HOME}/.ssh/agent" ]] && \
-  export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
-
 # Kubectl plugins via Krew
 krew_bin_path="${KREW_ROOT:-${HOME}/.krew}/bin"
 [[ -r "${krew_bin_path}" ]] \
   && pathappend "${krew_bin_path}"
 
+# Configure auto-completion
+userCompletionFile="${HOME}/.zsh/completion.zsh"
+[[ -r "${userCompletionFile}" ]] && \
+  source "${userCompletionFile}"
+
 # Pull in manually-defined aliases
-[[ -r "${HOME}/.zsh/aliases.zsh" ]] && \
-  source "${HOME}/.zsh/aliases.zsh"
+userAliasesFile="${HOME}/.zsh/aliases.zsh"
+[[ -r "${userAliasesFile}" ]] && \
+  source "${userAliasesFile}"
+
+# Set any user-specific secret env vars
+if [[ -r "${USER_SECRETS_FILE}" ]]; then
+  if find ${USER_SECRETS_FILE} -type f -perm +044 | grep "${USER_SECRETS_FILE}"; then
+    echo "PROBLEM: User secrets file is readable by other users"
+    echo "Skipping until you fix it: chmod 0600 ${USER_SECRETS_FILE}"
+  else
+    source "${USER_SECRETS_FILE}"
+  fi
+fi
+
+# If we have a local SSH agent socket, use it.
+[[ -r "${HOME}/.ssh/agent" ]] && \
+  export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
 
 # Finally enable iTerm integration - assumes you're using iTerm
 [[ -r "${HOME}/.iterm2_shell_integration.zsh" ]] && \

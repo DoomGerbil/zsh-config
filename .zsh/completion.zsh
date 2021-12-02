@@ -2,6 +2,7 @@
 
 # Define where our completions and zsh functions live and can be loaded from
 local_completions_dir="${ZSHRC}/completions"
+completion_cache_dir="${ZSHRC}/cache"
 FPATH="${FPATH}:${ZSHRC}/functions:${local_completions_dir}"
 
 # Rebuild the autocomplete cache if it's more than a day old
@@ -17,9 +18,12 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}
 zstyle ':completion:*' list-suffixeszstyle ':completion:*' expand prefix suffix
 
 # Use completion caching
+# Guarantee that the cache directory exists, otherwise things get unhappy
+mkdir -p ${completion_cache_dir} && \
+  zstyle ':completion:*' cache-path "${completion_cache_dir}"
+
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
 
 # Insert spaces after a completion so you can just keep typing
 zstyle ':completion:*' add-space true
