@@ -52,20 +52,65 @@ HYPHEN_INSENSITIVE="true"
 # This is my set of OMZSH plugins, but others might want a different set
 # Comment out any you don't want, or add new ones from https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins
 plugins=()
+
+# Install a collection of useful aliases
 plugins+=(aliases)
-plugins+=(aws)
-plugins+=(direnv)
+
+# Completion support for AWS's CLI tool
+# plugins+=(aws)
+
+# Automatically pop up a notification when a long-running process finishes
+# MacOS: Requires `brew install terminal-notifier`
+plugins+=(bgnotify)
+
+# Let zsh tell you how to install something if you run a command that isn't installed
+plugins+=(command-not-found)
+
+# Automatically load per-directory settings from `.envrc` files
+# Disabled for testing if this is why my terminal is slow
+# plugins+=(direnv)
+
+# Completion for Docker and Docker Compose
 plugins+=(docker)
+plugins+=(docker-compose)
+
+# Enables FZF for fuzzy finding.
 plugins+=(fzf)
+
+# Completion support for Google Cloud CLI tools
 plugins+=(gcloud)
-plugins+=(gh)
-plugins+=(git)
+
+# Faster completion for the git CLI
+plugins+=(gitfast)
+
+# Helm completion
 plugins+=(helm)
-plugins+=(history)
-plugins+=(iterm2)
-plugins+=(pyenv)
+
+# Aliases and completion for Kubectl
 plugins+=(kubectl)
+
+# MacOS system shortcuts
+plugins+=(macos)
+
+# Completion for minikube
+plugins+=(minikube)
+
+# Completion and aliases for npm
+# plugins+=(npm)
+
+# Completion for nvm
+# plugins+=(nvm)
+
+# Completion for Python environment management
+plugins+=(pyenv)
+
+# Completion for Terraform
 plugins+=(terraform)
+
+# Aliases and completion for Yarn
+# plugins+=(yarn)
+
+# These are manually-managed plugins that enable some suggestions and syntax highlighting
 plugins+=(zsh-autosuggestions)
 plugins+=(zsh-syntax-highlighting)
 
