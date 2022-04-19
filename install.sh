@@ -15,9 +15,8 @@ echo "Installing FZF and Ripgrep from Homebrew"
 command -v "fzf" >"/dev/null" || \
   brew install fzf
 
-command -v "ripgrep" >"/dev/null" || \
+command -v "rg" >"/dev/null" || \
   brew install ripgrep
-
 
 echo "Installing new configuration files."
 [[ -r "${HOME}/.zprofile" ]] && \
