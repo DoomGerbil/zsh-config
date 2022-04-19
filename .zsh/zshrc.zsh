@@ -57,7 +57,7 @@ plugins=()
 plugins+=(aliases)
 
 # Completion support for AWS's CLI tool
-# plugins+=(aws)
+plugins+=(aws)
 
 # Automatically pop up a notification when a long-running process finishes
 # MacOS: Requires `brew install terminal-notifier`
@@ -103,6 +103,8 @@ plugins+=(minikube)
 
 # Completion for Python environment management
 plugins+=(pyenv)
+
+plugins+=(timer)
 
 # Completion for Terraform
 plugins+=(terraform)
@@ -164,8 +166,8 @@ if [[ -r "${USER_SECRETS_FILE}" ]]; then
 fi
 
 # If we have a local SSH agent socket, use it.
-[[ -r "${HOME}/.ssh/agent" ]] && \
-  export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
+# [[ -r "${HOME}/.ssh/agent" ]] && \
+#  export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
 
 # Finally enable iTerm integration - assumes you're using iTerm
 [[ -r "${HOME}/.iterm2_shell_integration.zsh" ]] && \

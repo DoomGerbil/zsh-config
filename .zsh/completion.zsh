@@ -51,12 +51,26 @@ zstyle ':completion:*:*:kubectl:*' list-grouped false
 [[ -r "${local_completions_dir}/_kubectx" ]] \
   || curl -Ssl https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.zsh -o "${local_completions_dir}/_kubectx"
 
-# If kustomize is installed, rebuild its completion functions
+# If kustomize is installed and the completion index is old, rebuild it
 command -v "kustomize" >"/dev/null" && \
   rm -f "${local_completions_dir}/_kustomize" && \
   kustomize completion zsh > "${local_completions_dir}/_kustomize"
 
-# If stern (K8S log tailer) is installed, rebuild its completion functions
+# If kpt is installed and the completion index is old, rebuild it
+command -v "kpt" >"/dev/null" && \
+  rm -f "${local_completions_dir}/_kpt" && \
+  kpt completion zsh > "${local_completions_dir}/_kpt"
+
+# If stern (K8S log tailer) is installed and the completion index is old, rebuild it
 command -v "stern" >"/dev/null" && \
   rm -f "${local_completions_dir}/_stern" && \
   stern --completion zsh > "${local_completions_dir}/_stern"
+
+# If pack (buildpack CLI) is installed and the completion index is old, rebuild it
+command -v "pack" >"/dev/null" && \
+  [[ -r "${HOME}/.pack/completion.zsh" ]] && \
+  source ~/.pack/completion.zsh
+
+# If commitizen is installed, register its completer
+command -v "cz" >"/dev/null" && \
+  eval "$(register-python-argcomplete cz)"
