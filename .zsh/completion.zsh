@@ -70,7 +70,3 @@ command -v "stern" >"/dev/null" && \
 command -v "pack" >"/dev/null" && \
   [[ -r "${HOME}/.pack/completion.zsh" ]] && \
   source ~/.pack/completion.zsh
-
-# If commitizen is installed, register its completer
-command -v "cz" >"/dev/null" && \
-  eval "$(register-python-argcomplete cz)"
