@@ -9,7 +9,7 @@ echo "Updating repo from live configuration files."
 # .zprofile
 [[ -r "${HOME}/.zsh/zprofile.zsh" ]] && \
   echo "Updating zprofile" && \
-  cp "${HOME}/.zsh/zshprofile.zsh" .zsh/zprofile.zsh
+  cp "${HOME}/.zsh/zprofile.zsh" .zsh/zprofile.zsh
 
 # .zshrc
 [[ -r "${HOME}/.zsh/zshrc.zsh" ]] && \

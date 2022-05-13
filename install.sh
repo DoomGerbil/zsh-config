@@ -1,26 +1,26 @@
 #! /usr/bin/env bash
 
-echo "!! Checking and installing prereqs !!"
+echo "Checking and installing prereqs"
 
 [[ -d "${HOME}/.oh-my-zsh" ]] || \
-  echo "Installing Oh My ZSH" && \
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  (echo "Oh My ZSH not found, installing..." && \
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
 
 
 p10kdir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 [[ -d "${p10kdir}" ]] || \
-  echo "Powerlevel10K not found - installing" && \
-  git clone --depth=1 "https://github.com/romkatv/powerlevel10k.git" "${p10kdir}/themes/powerlevel10k"
+  (echo "Powerlevel10K not found, installing..." && \
+  git clone --depth=1 "https://github.com/romkatv/powerlevel10k.git" "${p10kdir}/themes/powerlevel10k")
 
 # Install fzf if not present
 command -v "fzf" >"/dev/null" || \
-  echo "Installing FZF from Homebrew" && \
-  brew install fzf
+  (echo "FZF not found, installing..." && \
+  brew install fzf)
 
 # Install ripgrep if not present
 command -v "rg" >"/dev/null" || \
-  echo "Installing Ripgrep from Homebrew" && \
-  brew install ripgrep
+  (echo "Ripgrep not found, installing..." && \
+  brew install ripgrep)
 
 echo "Installing new configuration files."
 
