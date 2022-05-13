@@ -46,6 +46,6 @@ cp .zshrc "${HOME}/.zshrc"
 echo "Installing .zsh directory"
 [[ -r "${HOME}/.zsh" ]] && \
   echo "Backing up your existing .zsh directory to .zsh.old" && \
-  mv "${HOME}/.zsh" "${HOME}/.zsh.old"
+  rm -rf "${HOME}/.zsh.old" && mv "${HOME}/.zsh" "${HOME}/.zsh.old"
 
 cp -R .zsh "${HOME}/.zsh"

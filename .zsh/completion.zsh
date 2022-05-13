@@ -71,10 +71,6 @@ command -v "pack" >"/dev/null" && \
   [[ -r "${HOME}/.pack/completion.zsh" ]] && \
   source ~/.pack/completion.zsh
 
-# If commitizen is installed, register its completer
-command -v "cz" >"/dev/null" && \
-  eval "$(register-python-argcomplete cz)"
-
 # Custom AWS profile completer
 aws-profiles() {
     cat ~/.aws/config | grep '\[.*profile' | grep -v '#' | tr -d '[]' | sed 's/profile //'
