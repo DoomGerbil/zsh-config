@@ -37,3 +37,5 @@ alias presub='circle local presubmit --mode=autofix'
 
 # Configuration required for granted/assume to work correctly
 alias assume="source assume"
+
+alias awsid="aws sts get-caller-identity"

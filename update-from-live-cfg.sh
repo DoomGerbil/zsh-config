@@ -19,15 +19,8 @@ echo "Updating repo from live configuration files."
 if [[ -r "${HOME}/.zsh" ]]; then
   echo "Updating .zsh directory"
 
-  # Save the preservable contents of the cache dir, since we wipe it out otherwise
-  tmpdir=$(mktemp)
-  cachedir=".zsh/cache"
-  cp "${cachedir}/README.md" "${tmpdir}/"
-
-  cp -R "${HOME}/.zsh/" .
-
-  # Don't save the cache, since that will vary per user.
-  rm -f "${cachedir}/*"
-  cp "${tmpdir}/README.md" "${cachedir}/README.md"
-  touch "${cachedir}/.gitkeep"
+  # Copy the live .zsh into the repo dir, ignoring the per-machine cache and stupid MacOS system files
+  rsync -av --progress "${HOME}/.zsh/" ".zsh/" \
+  --exclude "cache" \
+  --exclude ".DS_Store"
 fi

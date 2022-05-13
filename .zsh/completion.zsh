@@ -70,3 +70,18 @@ command -v "stern" >"/dev/null" && \
 command -v "pack" >"/dev/null" && \
   [[ -r "${HOME}/.pack/completion.zsh" ]] && \
   source ~/.pack/completion.zsh
+
+# If commitizen is installed, register its completer
+command -v "cz" >"/dev/null" && \
+  eval "$(register-python-argcomplete cz)"
+
+# Custom AWS profile completer
+aws-profiles() {
+    cat ~/.aws/config | grep '\[.*profile' | grep -v '#' | tr -d '[]' | sed 's/profile //'
+  }
+
+set-aws-profile() {
+  local aws_profile=$1
+  export AWS_PROFILE=${aws_profile}
+  export AWS_REGION=eu-west-2
+}

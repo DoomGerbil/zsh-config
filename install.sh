@@ -1,14 +1,15 @@
 #! /usr/bin/env bash
 
-echo "!! Installing prereqs !!"
+echo "!! Checking and installing prereqs !!"
 
-echo "Installing Oh My ZSH"
 [[ -d "${HOME}/.oh-my-zsh" ]] || \
+  echo "Installing Oh My ZSH" && \
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-echo "Installing Powerlevel10K"
+
 p10kdir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 [[ -d "${p10kdir}" ]] || \
+  echo "Powerlevel10K not found - installing" && \
   git clone --depth=1 "https://github.com/romkatv/powerlevel10k.git" "${p10kdir}/themes/powerlevel10k"
 
 # Install fzf if not present

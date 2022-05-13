@@ -4,25 +4,6 @@
 # Not part of the config distribution
 USER_SECRETS_FILE="${USER_SECRETS_FILE:-${HOME}/.secrets.zsh}"
 
-# Base helpers for PATH mangling
-pathappend() {
-  for ARG in "$@"
-  do
-    if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then
-        PATH="${PATH:+"$PATH:"}$ARG"
-    fi
-  done
-}
-
-pathprepend() {
-  for ARG in "$@"
-  do
-    if [ -d "$ARG" ] && [[ ":$PATH:" != *":$ARG:"* ]]; then
-        PATH="$ARG${PATH:+":$PATH"}"
-    fi
-  done
-}
-
 # Enable Python for the platform repo
 export SCRIPT_FEATURE_FLAG_PYTHON=1
 
@@ -57,7 +38,7 @@ plugins=()
 plugins+=(aliases)
 
 # Completion support for AWS's CLI tool
-plugins+=(aws)
+# plugins+=(aws)
 
 # Automatically pop up a notification when a long-running process finishes
 # MacOS: Requires `brew install terminal-notifier`
@@ -67,7 +48,7 @@ plugins+=(bgnotify)
 plugins+=(command-not-found)
 
 # Automatically load per-directory settings from `.envrc` files
-# Disabled for testing if this is why my terminal is slow
+# Disabled because this makes my terminal slow
 # plugins+=(direnv)
 
 # Completion for Docker and Docker Compose
@@ -132,19 +113,6 @@ fi
 # Activate oh-my-zsh
 source "${ZSH}/oh-my-zsh.sh"
 
-# Configure some legacy Golang stuff
-export GOPATH="${HOME}/go"
-export GOBIN="${GOPATH}/bin"
-
-# Do some arbitrary PATH mangling
-pathprepend "${GOBIN}"
-pathprepend "/usr/local/sbin"
-pathprepend "${HOME}/bin"
-# Kubectl plugins via Krew
-krew_bin_path="${KREW_ROOT:-${HOME}/.krew}/bin"
-[[ -r "${krew_bin_path}" ]] \
-  && pathappend "${krew_bin_path}"
-
 # Configure auto-completion
 userCompletionFile="${HOME}/.zsh/completion.zsh"
 [[ -r "${userCompletionFile}" ]] && \
@@ -165,9 +133,10 @@ if [[ -r "${USER_SECRETS_FILE}" ]]; then
   fi
 fi
 
-# If we have a local SSH agent socket, use it.
-# [[ -r "${HOME}/.ssh/agent" ]] && \
-#  export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
+# Enable GKE Gcloud Auth, if the plugin is installed
+if command -v "gke-gcloud-auth-plugin" >/dev/null; then
+  USE_GKE_GCLOUD_AUTH_PLUGIN=True
+fi
 
 # Finally enable iTerm integration - assumes you're using iTerm
 [[ -r "${HOME}/.iterm2_shell_integration.zsh" ]] && \
