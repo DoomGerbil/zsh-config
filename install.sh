@@ -27,23 +27,25 @@ echo "Installing new configuration files."
 echo "Installing .zshenv"
 [[ -r "${HOME}/.zshenv" ]] && \
   echo "Backing up your existing .zshenv to .zshenv.old" && \
-  cp "${HOME}/.zshenv" "${HOME}/.zshenv.old"
+  mv "${HOME}/.zshenv" "${HOME}/.zshenv.old"
 cp .zshenv "${HOME}/.zshenv"
 
 echo "Installing .zprofile"
 [[ -r "${HOME}/.zprofile" ]] && \
   echo "Backing up your existing .zprofile to .zprofile.old" && \
-  cp "${HOME}/.zprofile" "${HOME}/.zprofile.old"
+  mv "${HOME}/.zprofile" "${HOME}/.zprofile.old"
 cp .zprofile "${HOME}/.zprofile"
 
 echo "Installing .zshrc"
 [[ -r "${HOME}/.zshrc" ]] && \
   echo "Backing up your existing .zshrc to .zshrc.old" && \
-  cp "${HOME}/.zshrc" "${HOME}/.zshrc.old"
+  mv "${HOME}/.zshrc" "${HOME}/.zshrc.old"
+
 cp .zshrc "${HOME}/.zshrc"
 
 echo "Installing .zsh directory"
 [[ -r "${HOME}/.zsh" ]] && \
   echo "Backing up your existing .zsh directory to .zsh.old" && \
-  cp -R "${HOME}/.zsh" "${HOME}/.zsh.old"
+  mv "${HOME}/.zsh" "${HOME}/.zsh.old"
+
 cp -R .zsh "${HOME}/.zsh"

@@ -1,4 +1,7 @@
 #! /usr/bin/env zsh
 
-[[ -r "${ZSHRC}/zshprofile.zsh" ]] && \
-  source "${ZSHRC}/zshprofile.zsh"
+# Set $ZSHRC if not already set
+export ZSHRC="${ZSHRC:-$HOME/.zsh}"
+
+[[ -r "${ZSHRC}/zprofile.zsh" ]] && \
+  source "${ZSHRC}/zprofile.zsh"
