@@ -3,7 +3,7 @@
 # Define where our completions and zsh functions live and can be loaded from
 local_completions_dir="${ZSHRC}/completions"
 completion_cache_dir="${ZSHRC}/cache"
-FPATH="${FPATH}:${ZSHRC}/functions:${local_completions_dir}"
+FPATH="${local_completions_dir}:${FPATH}:${ZSHRC}/functions"
 
 # Rebuild the autocomplete cache if it's more than a day old
 find ~/.zcompdump -type f -mtime +1d -exec rm -f {} \;
@@ -50,6 +50,11 @@ zstyle ':completion:*:*:kubectl:*' list-grouped false
 # Load Kubectx completion when needed
 [[ -r "${local_completions_dir}/_kubectx" ]] \
   || curl -Ssl https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.zsh -o "${local_completions_dir}/_kubectx"
+
+# If oc (OpenShift CLI) is installed and the completion index is old, rebuild it
+command -v "oc" >"/dev/null" && \
+  rm -f "${local_completions_dir}/_oc" && \
+  oc completion zsh > "${local_completions_dir}/_oc"
 
 # If kustomize is installed and the completion index is old, rebuild it
 command -v "kustomize" >"/dev/null" && \
