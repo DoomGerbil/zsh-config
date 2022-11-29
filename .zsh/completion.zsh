@@ -28,7 +28,15 @@ zstyle ':completion:*' use-cache on
 # Insert spaces after a completion so you can just keep typing
 zstyle ':completion:*' add-space true
 
+## Per-command completion configuration
+## Kept in alpha-sort order for ease of updates/discovery
+
 # AWS - handled by OMZSH plugin
+
+# Azure CLI - if installed and completion doesn't exist, fetch and install it.
+[[ -r "${local_completions_dir}/_az" ]] \
+  || curl -Ssl https://raw.githubusercontent.com/Azure/azure-cli/dev/az.completion -o "${local_completions_dir}/_az"
+compdef az
 
 # Bazel - handled by OMZSH plugin
 
@@ -38,40 +46,41 @@ zstyle ':completion:*:*:docker-*:*' option-stacking yes
 
 # gcloud/gsutil - handled by OMZSH plugin
 
-# GH/hub - handled by OMZSH plugin
+# GitHub's hub CLI - handled by OMZSH plugin
 
-# Kubectl - handled by OMZSH plugin
-zstyle ':completion:*:*:kubectl:*' list-grouped false
-
-# Load Kubens completion when needed
-[[ -r "${local_completions_dir}/_kubens" ]] \
-  || curl -Ssl https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.zsh -o "${local_completions_dir}/_kubens"
-
-# Load Kubectx completion when needed
-[[ -r "${local_completions_dir}/_kubectx" ]] \
-  || curl -Ssl https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.zsh -o "${local_completions_dir}/_kubectx"
-
-# If oc (OpenShift CLI) is installed and the completion index is old, rebuild it
-command -v "oc" >"/dev/null" && \
-  rm -f "${local_completions_dir}/_oc" && \
-  oc completion zsh > "${local_completions_dir}/_oc"
-
-# If kustomize is installed and the completion index is old, rebuild it
-command -v "kustomize" >"/dev/null" && \
-  rm -f "${local_completions_dir}/_kustomize" && \
-  kustomize completion zsh > "${local_completions_dir}/_kustomize"
-
-# If kpt is installed and the completion index is old, rebuild it
+# KPT - if installed, rebuild the completion index
 command -v "kpt" >"/dev/null" && \
   rm -f "${local_completions_dir}/_kpt" && \
   kpt completion zsh > "${local_completions_dir}/_kpt"
 
-# If stern (K8S log tailer) is installed and the completion index is old, rebuild it
+# Kubectl - handled by OMZSH plugin
+zstyle ':completion:*:*:kubectl:*' list-grouped false
+
+# Kubens - if installed, fetch completions
+[[ -r "${local_completions_dir}/_kubens" ]] \
+  || curl -Ssl https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.zsh -o "${local_completions_dir}/_kubens"
+
+# Kubectx - if installed, fetch completions
+[[ -r "${local_completions_dir}/_kubectx" ]] \
+  || curl -Ssl https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.zsh -o "${local_completions_dir}/_kubectx"
+
+# Kustomize - if installed, rebuild the completion index
+command -v "kustomize" >"/dev/null" && \
+  rm -f "${local_completions_dir}/_kustomize" && \
+  kustomize completion zsh > "${local_completions_dir}/_kustomize"
+
+# OpenShift CLI (oc) - if installed, rebuild the completion index
+command -v "oc" >"/dev/null" && \
+  rm -f "${local_completions_dir}/_oc" && \
+  oc completion zsh > "${local_completions_dir}/_oc"
+
+
+# Stern (K8S log tailer) - if installed, rebuild the completion index
 command -v "stern" >"/dev/null" && \
   rm -f "${local_completions_dir}/_stern" && \
   stern --completion zsh > "${local_completions_dir}/_stern"
 
-# If pack (buildpack CLI) is installed and the completion index is old, rebuild it
+# Buildpack CLI (pack) - if installed, rebuild the completion index
 command -v "pack" >"/dev/null" && \
   [[ -r "${HOME}/.pack/completion.zsh" ]] && \
   source ~/.pack/completion.zsh

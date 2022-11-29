@@ -133,10 +133,8 @@ if [[ -r "${USER_SECRETS_FILE}" ]]; then
   fi
 fi
 
-# Enable GKE Gcloud Auth, if the plugin is installed
-if command -v "gke-gcloud-auth-plugin" >/dev/null; then
-  USE_GKE_GCLOUD_AUTH_PLUGIN=True
-fi
+# Enable GKE Gcloud Auth
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # Finally enable iTerm integration - assumes you're using iTerm
 [[ -r "${HOME}/.iterm2_shell_integration.zsh" ]] && \
