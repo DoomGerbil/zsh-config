@@ -37,3 +37,7 @@ alias presub='circle local presubmit --mode=autofix'
 
 # Configuration required for granted/assume to work correctly
 alias assume="source assume"
+
+# This absolutely, ridiculously stupid alias makes the 'watch' command work with aliases
+# https://unix.stackexchange.com/a/25329
+alias watch='watch '

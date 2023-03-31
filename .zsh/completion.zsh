@@ -34,8 +34,10 @@ zstyle ':completion:*' add-space true
 # AWS - handled by OMZSH plugin
 
 # Azure CLI - if installed and completion doesn't exist, fetch and install it.
-[[ -r "${local_completions_dir}/_az" ]] \
-  || curl -Ssl https://raw.githubusercontent.com/Azure/azure-cli/dev/az.completion -o "${local_completions_dir}/_az"
+azcli_version="2.42.0"
+azcli_ac_path="/usr/local/Cellar/azure-cli/${azcli_version}/etc/bash_completion.d/az"
+[[ -r "${azcli_ac_path}" ]] \
+  || ln -fs "${azcli_ac_path}" "${local_completions_dir}/_az"
 compdef az
 
 # Bazel - handled by OMZSH plugin
@@ -47,6 +49,11 @@ zstyle ':completion:*:*:docker-*:*' option-stacking yes
 # gcloud/gsutil - handled by OMZSH plugin
 
 # GitHub's hub CLI - handled by OMZSH plugin
+
+# JFrog CLI (Artifactory) - if installed, rebuild the completion index and
+command -v "jf" >"/dev/null" && \
+  rm -f "${local_completions_dir}/_jf" && \
+  jf completion zsh > "${local_completions_dir}/_jf"
 
 # KPT - if installed, rebuild the completion index
 command -v "kpt" >"/dev/null" && \
@@ -73,7 +80,6 @@ command -v "kustomize" >"/dev/null" && \
 command -v "oc" >"/dev/null" && \
   rm -f "${local_completions_dir}/_oc" && \
   oc completion zsh > "${local_completions_dir}/_oc"
-
 
 # Stern (K8S log tailer) - if installed, rebuild the completion index
 command -v "stern" >"/dev/null" && \

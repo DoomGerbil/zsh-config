@@ -136,6 +136,11 @@ fi
 # Enable GKE Gcloud Auth
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
+# If we have a local SSH agent socket, use it.
+if [ -r "${HOME}/.ssh/agent" ]; then
+  export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
+fi
+
 # Finally enable iTerm integration - assumes you're using iTerm
 [[ -r "${HOME}/.iterm2_shell_integration.zsh" ]] && \
   source "${HOME}/.iterm2_shell_integration.zsh"
