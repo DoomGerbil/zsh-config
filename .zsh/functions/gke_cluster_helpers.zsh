@@ -1,22 +1,21 @@
 #! /usr/bin/env zsh
 
 function describe_cluster {
-  function print_usage {
-    echo "${1} -p|--project <GCE project> -l|--location <GCE region> <GKE cluster name>"
-  }
-
   local -a proj loc usage
   zparseopts -D -E -F \
     p:=proj -project:=proj \
     l:=loc -location:=loc \
     h=usage -help=usage
 
-  [[ -n ${usage-} ]] && { print_usage "${0}"; return 0 }
+  [[ -n ${usage-} ]] && {
+    echo "${0} -p|--project <GCE project> -l|--location <GCE region> <GKE cluster name>";
+    return 0
+  }
 
   local cluster="${1}"
   [[ -z "${cluster-}" ]] && {
     echo "You must pass in a cluster name to check";
-    print_usage "${0}";
+    echo "${0} -p|--project <GCE project> -l|--location <GCE region> <GKE cluster name>";
     return 1;
   }
 
@@ -24,7 +23,7 @@ function describe_cluster {
   [[ -z "${project}" ]] && {
     echo "GCE Project is required. Set this via either:";
     echo "gcloud config set project <project_name>";
-    print_usage "${0}";
+    echo "${0} -p|--project <GCE project> -l|--location <GCE region> <GKE cluster name>";
     return 1;
   }
 
@@ -32,19 +31,13 @@ function describe_cluster {
   [[ -z "${location}" ]] && {
     echo "GCE Region is required. Set this via either:";
     echo "gcloud config set compute/region <project_name>";
-    print_usage "${0}";
+    echo "${0} -p|--project <GCE project> -l|--location <GCE region> <GKE cluster name>";
     return 1;
   }
 
   # Fetch the cluster data and run it through jq. If the cluster exists, print the important bits.
-  gcloud container clusters describe \
-    --project "${project}" \
-    --region "${location}" \
-    "${cluster}" \
-    --format=json | \
-      jq --null-input \
-        --exit-status \
-        --raw-output \
+  "gcloud container clusters describe --project ${project} --region ${location} ${cluster} --format=json" | \
+      jq --null-input --exit-status --raw-output \
         "inputs | if .status == \"RUNNING\" then \"Cluster: ${project}/${cluster} - started \(.createTime)\" else empty end" && \
     echo "View console: https://console.cloud.google.com/kubernetes/clusters/details/${location}/${cluster}?project=${project}\n"
 }
