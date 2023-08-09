@@ -22,5 +22,6 @@ if [[ -r "${HOME}/.zsh" ]]; then
   # Copy the live .zsh into the repo dir, ignoring the per-machine cache and stupid MacOS system files
   rsync -av --progress "${HOME}/.zsh/" ".zsh/" \
   --exclude "cache" \
+  --exclude "completions" \
   --exclude ".DS_Store"
 fi

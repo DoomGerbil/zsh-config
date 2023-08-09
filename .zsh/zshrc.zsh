@@ -4,27 +4,28 @@
 # Not part of the config distribution
 USER_SECRETS_FILE="${USER_SECRETS_FILE:-${HOME}/.secrets.zsh}"
 
-# Enable Python for the platform repo
-export SCRIPT_FEATURE_FLAG_PYTHON=1
+# Switch on Powerlevel10K if running in Terminal, iTerm, or vscode, but not Warp, where it doesn't work properly
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of the zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# Assumes that Powerlevel 10K is installed already
-[[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] && \
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  # Enable Powerlevel10k instant prompt. Should stay close to the top of the zshrc.
+  # Initialization code that may require console input (password prompts, [y/n]
+  # confirmations, etc.) must go above this block; everything else may go below.
+  # Assumes that Powerlevel 10K is installed already
+  [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]] && \
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 
-# Install some omzsh plugins if they're not already there
-[[ -r "${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting" ]] || \
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
-[[ -r "${ZSH_CUSTOM}/plugins/zsh-autosuggestions" ]] || \
-  git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
+  # Install some omzsh plugins if they're not already there
+  [[ -r "${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting" ]] || \
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
+  [[ -r "${ZSH_CUSTOM}/plugins/zsh-autosuggestions" ]] || \
+    git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
 
-# Powerlevel 10K
-# To customize, run `p10k configure` or edit ${ZSHRC}/p10k.zsh.
-ZSH_THEME="powerlevel10k/powerlevel10k"
-[[ -r "${ZSHRC}/p10k.zsh" ]] && \
-  source "${ZSHRC}/p10k.zsh"
+  # Powerlevel 10K
+  # To customize, run `p10k configure` or edit ${ZSHRC}/p10k.zsh.
+  ZSH_THEME="powerlevel10k/powerlevel10k"
+  [[ -r "${ZSHRC}/p10k.zsh" ]] && \
+    source "${ZSHRC}/p10k.zsh"
+fi
 
 # Configure oh-my-zsh
 COMPLETION_WAITING_DOTS="true"
@@ -38,7 +39,7 @@ plugins=()
 plugins+=(aliases)
 
 # Completion support for AWS's CLI tool
-# plugins+=(aws)
+plugins+=(aws)
 
 # Automatically pop up a notification when a long-running process finishes
 # MacOS: Requires `brew install terminal-notifier`
@@ -141,6 +142,8 @@ if [ -r "${HOME}/.ssh/agent" ]; then
   export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
 fi
 
-# Finally enable iTerm integration - assumes you're using iTerm
-[[ -r "${HOME}/.iterm2_shell_integration.zsh" ]] && \
-  source "${HOME}/.iterm2_shell_integration.zsh"
+# Only enable iTerm integration if running in iTerm
+if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
+  [[ -r "${HOME}/.iterm2_shell_integration.zsh" ]] && \
+    source "${HOME}/.iterm2_shell_integration.zsh"
+fi

@@ -32,12 +32,8 @@ zstyle ':completion:*' add-space true
 ## Kept in alpha-sort order for ease of updates/discovery
 
 # AWS - handled by OMZSH plugin
-
-# Azure CLI - if installed and completion doesn't exist, fetch and install it.
-azcli_ac_path="$(find /usr/local/Cellar/azure-cli/**/etc/bash_completion.d/az)"
-[[ -r "${azcli_ac_path}" && ! -r "${local_completions_dir}/_az" ]] \
-  && ln -s "${azcli_ac_path}" "${local_completions_dir}/_az"
-compdef az
+# Uncomment this line to manually install AWS CLI completion
+complete -C '/usr/local/bin/aws_completer' aws
 
 # Bazel - handled by OMZSH plugin
 
