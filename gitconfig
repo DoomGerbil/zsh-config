@@ -1,0 +1,102 @@
+# This is Git's per-user configuration file.
+[init]
+	templatedir = ~/.git_template
+
+[user]
+	name = Sean Robertson
+	email = seanrobertson@improbable.io
+
+[push]
+	default = current
+	autoSetupRemote = true
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
+[difftool "vscode"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+
+[diff]
+    tool = vscode
+
+[mergetool "smerge"]
+	cmd = smerge -n mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
+	trustExitCode = true
+
+[merge]
+	conflictStyle = diff3
+	renamelimit = 0
+	tool = smerge
+
+# [url "git@github.com:"]
+# 	insteadOf = https://github.com/
+
+[url "https://github.com/"]
+	insteadOf = "git@github.com:"
+
+[pull]
+	rebase = true
+
+[rebase]
+	autoStash = true
+
+[core]
+	excludesfile = /Users/sean/.gitignore
+	editor = vim
+
+[alias]
+	co = checkout
+	b = branch
+	ca = commit --amend -a --no-edit
+	cm = commit -m
+	cob = checkout -b
+	cod = checkout -
+	com = checkout main
+	coms = checkout master
+	s = status
+	stag = tag -s
+	undo = reset --soft HEAD~1
+	p = pull --rebase --autostash
+
+##################
+################## This entire section is related to configuring commit/tag signing ##################
+##################
+
+# When uncommented, this block enables signing all commits and tags
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
+	forceSignAnnotated = true
+
+# When uncommented, makes git use the system ssh binary instead of the Brew binary.
+# This is sometimes required or broken, depending on the version of macos, brew SSH, etc. DIAF Apple.
+[core]
+	sshCommand = /usr/local/bin/ssh
+
+# When these options are uncommented, use SSH signing instead of GPG signing, controlled by the allowed_signers file
+# Make sure that an SSH key is selected if this
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = /Users/sean/.ssh/allowed_signers
+
+## Only uncomment _one_ of the below signing keys, or Bad Things may happen (?!).
+[user]
+	# Uncomment for SK SSH Key signing
+	# Note that unlike other key formats, for THIS FORMAT ONLY, you give it a filepath. Sigh
+	signingkey = ~/.ssh/id_ed25519_sk.pub
+
+	# Uncomment for standard SSH Key signing
+	# signingkey = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCbr4Qi0GVqH8Up4pDgIHA90a4yDrJkLuXU7LQe4zowEfUGY+zezUS7SF76aV4Qme0JP5ox2gRg5xMtKfnVSt+gHstIRGccTFKsfwFeVEBNgcCCKBm7nw8Emgd2GpIeVT9GnFIR1LjNFyDkWMSuB88cISpQsedJhWG8DBQrAIlHPh6qoZDvXlBWEHDhcOLAebCo3Zp/HrAYtblBaaS3ZNScMllImtREn4OV0/pLcUE821kYLEknCubso7APhDpKYTPGDmKGbu0W13GzN7gUk/opSfjlquhBqPTFURNuQwSa5XK/Dk4eGztcHEY7sGyAjDqpXj34BcDn3+G4zT8izQtD seanrobertson@improbable.io
+
+	# Uncomment for GPG Key signing
+	# If this option is selected, ensure that format is not set to SSH above.
+	# signingkey = F2ACD31E
+
+##################
+################## This entire section is related to configuring commit/tag signing ##################
+##################
