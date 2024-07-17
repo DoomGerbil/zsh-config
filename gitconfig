@@ -1,20 +1,17 @@
 # This is Git's per-user configuration file.
-[init]
-	templatedir = ~/.git_template
-
 [user]
-	name = Sean Robertson
-	email = seanrobertson@improbable.io
+	name = NOT A REALNAME
+	email = DUMMY@GMAIL.COM
 
 [push]
 	default = current
 	autoSetupRemote = true
 
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+# [filter "lfs"]
+# 	clean = git-lfs clean -- %f
+# 	smudge = git-lfs smudge -- %f
+# 	process = git-lfs filter-process
+# 	required = true
 
 [difftool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
@@ -31,11 +28,11 @@
 	renamelimit = 0
 	tool = smerge
 
-# [url "git@github.com:"]
-# 	insteadOf = https://github.com/
+[url "git@github.com:"]
+	insteadOf = https://github.com/
 
-[url "https://github.com/"]
-	insteadOf = "git@github.com:"
+# [url "https://github.com/"]
+# 	insteadOf = "git@github.com:"
 
 [pull]
 	rebase = true
