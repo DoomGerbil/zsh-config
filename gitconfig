@@ -71,8 +71,8 @@
 
 # When uncommented, makes git use the system ssh binary instead of the Brew binary.
 # This is sometimes required or broken, depending on the version of macos, brew SSH, etc. DIAF Apple.
-[core]
-	sshCommand = /usr/local/bin/ssh
+# [core]
+# 	sshCommand = /usr/local/bin/ssh
 
 # When these options are uncommented, use SSH signing instead of GPG signing, controlled by the allowed_signers file
 # Make sure that an SSH key is selected if this
