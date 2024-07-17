@@ -23,7 +23,7 @@ export GOBIN="${GOPATH}/bin"
 
 # Do some arbitrary PATH mangling
 pathprepend "${GOBIN}"
-pathprepend "/usr/local/sbin"
+pathprepend "/opt/homebrew/bin"
 pathprepend "${HOME}/bin"
 
 # Kubectl plugins via Krew

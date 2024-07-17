@@ -7,10 +7,10 @@ echo "Checking and installing prereqs"
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
 
 
-p10kdir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+p10kdir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 [[ -d "${p10kdir}" ]] || \
   (echo "Powerlevel10K not found, installing..." && \
-  git clone --depth=1 "https://github.com/romkatv/powerlevel10k.git" "${p10kdir}/themes/powerlevel10k")
+  git clone --depth=1 "https://github.com/romkatv/powerlevel10k.git" "${p10kdir}")
 
 # Install fzf if not present
 command -v "fzf" >"/dev/null" || \
