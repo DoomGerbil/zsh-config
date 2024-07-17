@@ -15,8 +15,7 @@ You'll need to install a few things to get full use of this.
 
 * First, install [Oh My ZSH](https://github.com/ohmyzsh/ohmyzsh#basic-installation)
 * Next, install using Oh My ZSH - [Powerline 10K](https://github.com/romkatv/powerlevel10k#oh-my-zsh)
-* Then use Homebrew to install FZF - `brew install fzf`
-* And Ripgrep - `brew install ripgrep`
+* Then use Homebrew to install deps - `brew install fzf ripgrep terminal-notifier libfido2`
 * And if you don't already have it, the `gcloud` CLI is useful as well - `brew install google-cloud-sdk`
 
 It also contains some iTerm2-specific things that may or may not matter to you. :shrug:

@@ -6,7 +6,6 @@ echo "Checking and installing prereqs"
   (echo "Oh My ZSH not found, installing..." && \
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
 
-
 p10kdir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 [[ -d "${p10kdir}" ]] || \
   (echo "Powerlevel10K not found, installing..." && \
@@ -21,6 +20,31 @@ command -v "fzf" >"/dev/null" || \
 command -v "rg" >"/dev/null" || \
   (echo "Ripgrep not found, installing..." && \
   brew install ripgrep)
+
+# Install terminal-notifier if not present
+command -v "terminal-notifier" >"/dev/null" || \
+  (echo "terminal-notifier not found, installing..." && \
+  brew install terminal-notifier)
+
+# Install libfido2 and related formulae if not present to support Yubikey/security key
+libfido_installed=$(brew list | grep "^libfido2$")
+[[ -z "${libfido_installed}" ]] && \
+  (echo "libfido2 not found, installing..." && \
+  brew install libfido2)
+
+libsk_libfido_installed=$(brew list | grep "^libsk-libfido2$")
+[[ -z "${libsk_libfido_installed}" ]] && \
+  (echo "libsk-libfido2 not found, installing..." && \
+  brew install libsk-libfido2)
+
+libsk_libfido_install_installed=$(brew list | grep "^libsk-libfido2-install$")
+[[ -z "${libsk_libfido_install_installed}" ]] && \
+  (echo "libsk-libfido2-install not found, installing..." && \
+  brew install michaelroosz/ssh/libsk-libfido2-install)
+
+##
+# END OF PRE-REQS
+##
 
 echo "Installing new configuration files."
 

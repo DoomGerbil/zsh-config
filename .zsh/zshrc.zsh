@@ -59,8 +59,7 @@ plugins+=(command-not-found)
 # plugins+=(direnv)
 
 # Completion for Docker and Docker Compose
-plugins+=(docker)
-plugins+=(docker-compose)
+plugins+=(docker docker-compose)
 
 # Enables FZF for fuzzy finding.
 plugins+=(fzf)
@@ -83,11 +82,8 @@ plugins+=(macos)
 # Completion for minikube
 plugins+=(minikube)
 
-# Completion and aliases for npm
-# plugins+=(npm)
-
-# Completion for nvm
-# plugins+=(nvm)
+# Completion and aliases for npm/nvm
+# plugins+=(npm nvm)
 
 # Completion for Python environment management
 plugins+=(pyenv)
@@ -101,8 +97,9 @@ plugins+=(terraform)
 # plugins+=(yarn)
 
 # These are manually-managed plugins that enable some suggestions and syntax highlighting
-plugins+=(zsh-autosuggestions)
-plugins+=(zsh-syntax-highlighting)
+plugins+=(zsh-autosuggestions zsh-syntax-highlighting)
+
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # Sets up FZF fuzzy finder if it's installed (brew install fzf)
 if command -v "fzf" >"/dev/null"; then
@@ -140,8 +137,9 @@ if [[ -r "${USER_SECRETS_FILE}" ]]; then
   fi
 fi
 
-# Enable GKE Gcloud Auth
+# Configure gcloud for GKE Auth and MacOS Python
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
 # If we have a local SSH agent socket, use it.
 if [ -r "${HOME}/.ssh/agent" ]; then
@@ -153,3 +151,6 @@ if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
   [[ -r "${HOME}/.iterm2_shell_integration.zsh" ]] && \
     source "${HOME}/.iterm2_shell_integration.zsh"
 fi
+
+# Enable SSH to use credentials stored on security keys.
+export SSH_SK_PROVIDER=/usr/local/lib/libsk-libfido2.dylib
