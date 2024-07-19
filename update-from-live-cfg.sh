@@ -19,7 +19,7 @@ echo "Updating repo from live configuration files."
 if [[ -r "${HOME}/.zsh" ]]; then
   echo "Updating .zsh directory"
 
-  # Copy the live .zsh into the repo dir, ignoring the per-machine cache and stupid MacOS system files
+  # Copy the live .zsh into the repo dir, ignoring the per-machine cache and various MacOS system files
   rsync -av --progress "${HOME}/.zsh/" ".zsh/" \
   --exclude "cache" \
   --exclude "completions" \

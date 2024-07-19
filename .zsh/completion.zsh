@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 
+# This file contains a collection of completion settings and custom completions that I use, or have found useful.
+# YMMV, but feel free to use this as a starting point for your own completion settings.
+
 # Define where our completions and zsh functions live and can be loaded from
 local_completions_dir="${ZSHRC}/completions"
 completion_cache_dir="${ZSHRC}/cache"

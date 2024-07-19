@@ -34,8 +34,8 @@ The main shell configuration happens in `~/.zsh/zshrc.zsh`.
 You may want to tweak some of the things that it's doing, or add other random stuff in there.
 
 In particular, you probably want to have a look at the `plugins=()` line and choose the set of plugins
-that are useful for you from [the list](https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins). This is the
-set of plugins I use, but YMMV:
+that are useful for you from [the list](https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins). This is a
+reasonable default set of plugins, but YMMV:
 
 ```bash
 plugins=(aliases aws bazel direnv docker fzf gcloud gh git history iterm2 pyenv kubectl terraform zsh-autosuggestions zsh-syntax-highlighting)

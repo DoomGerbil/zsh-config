@@ -7,21 +7,11 @@
 	default = current
 	autoSetupRemote = true
 
-# [filter "lfs"]
-# 	clean = git-lfs clean -- %f
-# 	smudge = git-lfs smudge -- %f
-# 	process = git-lfs filter-process
-# 	required = true
-
 [difftool "vscode"]
     cmd = code --wait --diff $LOCAL $REMOTE
 
 [diff]
     tool = vscode
-
-[mergetool "smerge"]
-	cmd = smerge -n mergetool \"$BASE\" \"$LOCAL\" \"$REMOTE\" -o \"$MERGED\"
-	trustExitCode = true
 
 [merge]
 	conflictStyle = diff3
@@ -31,9 +21,6 @@
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 
-# [url "https://github.com/"]
-# 	insteadOf = "git@github.com:"
-
 [pull]
 	rebase = true
 
@@ -41,7 +28,7 @@
 	autoStash = true
 
 [core]
-	excludesfile = /Users/sean/.gitignore
+	excludesfile = ~/.gitignore
 	editor = vim
 
 [alias]
@@ -74,25 +61,32 @@
 # [core]
 # 	sshCommand = /usr/local/bin/ssh
 
-# When these options are uncommented, use SSH signing instead of GPG signing, controlled by the allowed_signers file
-# Make sure that an SSH key is selected if this
+####
+## You can only enable at most _one_ of the below sections, or Bad Things may happen.
+####
+
+# Option 1: SSH Key signing with a standard SSH key
+# [gpg]
+# 	format = ssh
+# [gpg "ssh"]
+# 	allowedSignersFile = ~/.ssh/allowed_signers
+# [user]
+# 	signingkey = $KEY_TYPE $KEY_SIGNATURE $KEY_EMAIL
+
+# Option 2: SSH Key signing with a security key (Yubikey, Nitrokey, etc)
 [gpg]
 	format = ssh
 [gpg "ssh"]
-	allowedSignersFile = /Users/sean/.ssh/allowed_signers
-
-## Only uncomment _one_ of the below signing keys, or Bad Things may happen (?!).
+	allowedSignersFile = ~/.ssh/allowed_signers
 [user]
-	# Uncomment for SK SSH Key signing
-	# Note that unlike other key formats, for THIS FORMAT ONLY, you give it a filepath. Sigh
+	# Note that unlike other key formats, for THIS FORMAT ONLY, a filepath is required instead of a signature. Sigh
 	signingkey = ~/.ssh/id_ed25519_sk.pub
 
-	# Uncomment for standard SSH Key signing
-	# signingkey = ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCbr4Qi0GVqH8Up4pDgIHA90a4yDrJkLuXU7LQe4zowEfUGY+zezUS7SF76aV4Qme0JP5ox2gRg5xMtKfnVSt+gHstIRGccTFKsfwFeVEBNgcCCKBm7nw8Emgd2GpIeVT9GnFIR1LjNFyDkWMSuB88cISpQsedJhWG8DBQrAIlHPh6qoZDvXlBWEHDhcOLAebCo3Zp/HrAYtblBaaS3ZNScMllImtREn4OV0/pLcUE821kYLEknCubso7APhDpKYTPGDmKGbu0W13GzN7gUk/opSfjlquhBqPTFURNuQwSa5XK/Dk4eGztcHEY7sGyAjDqpXj34BcDn3+G4zT8izQtD seanrobertson@improbable.io
-
-	# Uncomment for GPG Key signing
-	# If this option is selected, ensure that format is not set to SSH above.
-	# signingkey = F2ACD31E
+# Option 3: GPG Key signing with a GPG key
+# [gpg]
+# 	format = openpgp
+# [user]
+# 	signingkey = $GPG_KEY_ID
 
 ##################
 ################## This entire section is related to configuring commit/tag signing ##################

@@ -1,8 +1,16 @@
 #! /usr/bin/env zsh
 
-# The location of the optional user-specific secrets helper
-# Not part of the config distribution
+# Import any user-specific secrets here
+# This file is obviously not part of the config distribution, so it may not exist
 USER_SECRETS_FILE="${USER_SECRETS_FILE:-${HOME}/.secrets.zsh}"
+if [[ -r "${USER_SECRETS_FILE}" ]]; then
+  if find ${USER_SECRETS_FILE} -type f -perm +044 | grep "${USER_SECRETS_FILE}"; then
+    echo "PROBLEM: User secrets file is readable by other users"
+    echo "Skipping until you fix it: chmod 0600 ${USER_SECRETS_FILE}"
+  else
+    source "${USER_SECRETS_FILE}"
+  fi
+fi
 
 if ! diff -q "${ZSHRC}/gitconfig" ~/.gitconfig; then
   echo "Gitconfig updated. Backing up to ~/.gitconfig.old"
@@ -25,6 +33,8 @@ if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting"
   [[ -r "${ZSH_CUSTOM}/plugins/zsh-autosuggestions" ]] || \
     git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM}/plugins/zsh-autosuggestions"
+  [[ -r "${ZSH_CUSTOM}/plugins/fzf-tab" ]] || \
+    git clone https://github.com/Aloxaf/fzf-tab "${ZSH_CUSTOM}/plugins/fzf-tab"
 
   # Powerlevel 10K
   # To customize, run `p10k configure` or edit ${ZSHRC}/p10k.zsh.
@@ -97,7 +107,7 @@ plugins+=(terraform)
 # plugins+=(yarn)
 
 # These are manually-managed plugins that enable some suggestions and syntax highlighting
-plugins+=(zsh-autosuggestions zsh-syntax-highlighting)
+plugins+=(zsh-autosuggestions zsh-syntax-highlighting fzf-tab)
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
@@ -126,16 +136,6 @@ userCompletionFile="${HOME}/.zsh/completion.zsh"
 userAliasesFile="${HOME}/.zsh/aliases.zsh"
 [[ -r "${userAliasesFile}" ]] && \
   source "${userAliasesFile}"
-
-# Set any user-specific secret env vars
-if [[ -r "${USER_SECRETS_FILE}" ]]; then
-  if find ${USER_SECRETS_FILE} -type f -perm +044 | grep "${USER_SECRETS_FILE}"; then
-    echo "PROBLEM: User secrets file is readable by other users"
-    echo "Skipping until you fix it: chmod 0600 ${USER_SECRETS_FILE}"
-  else
-    source "${USER_SECRETS_FILE}"
-  fi
-fi
 
 # Configure gcloud for GKE Auth and MacOS Python
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
