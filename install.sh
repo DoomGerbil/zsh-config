@@ -26,6 +26,11 @@ command -v "terminal-notifier" >"/dev/null" || \
   (echo "terminal-notifier not found, installing..." && \
   brew install terminal-notifier)
 
+# Install eza if not present
+command -v "eza" >"/dev/null" || \
+  (echo "eza not found, installing..." && \
+  brew install eza)
+
 # Install libfido2 and related formulae if not present to support Yubikey/security key
 libfido_installed=$(brew list | grep "^libfido2$")
 [[ -z "${libfido_installed}" ]] && \

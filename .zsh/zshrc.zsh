@@ -107,7 +107,7 @@ plugins+=(terraform)
 # plugins+=(yarn)
 
 # These are manually-managed plugins that enable some suggestions and syntax highlighting
-plugins+=(zsh-autosuggestions zsh-syntax-highlighting fzf-tab)
+plugins+=(fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
