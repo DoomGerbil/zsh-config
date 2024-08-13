@@ -12,12 +12,6 @@ if [[ -r "${USER_SECRETS_FILE}" ]]; then
   fi
 fi
 
-if ! diff -q "${ZSHRC}/gitconfig" ~/.gitconfig; then
-  echo "Gitconfig updated. Backing up to ~/.gitconfig.old"
-  mv ~/.gitconfig ~/.gitconfig.old
-  cp "${ZSHRC}/gitconfig" ~/.gitconfig
-fi
-
 # Switch on Powerlevel10K if running in Terminal, iTerm, or vscode, but not Warp, where it doesn't work properly
 if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
 
