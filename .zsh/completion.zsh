@@ -107,6 +107,11 @@ command -v "pack" >"/dev/null" && \
   [[ -r "${HOME}/.pack/completion.zsh" ]] && \
   source ~/.pack/completion.zsh
 
+# ADR Tools completion, if installed via Homebrew
+adr_tools_completion_path="/opt/homebrew/etc/bash_completion.d/adr-tools"
+[[ -r "${adr_tools_completion_path}" ]] && \
+  source "${adr_tools_completion_path}"
+
 # Custom AWS profile completer
 aws-profiles() {
     cat ~/.aws/config | grep '\[.*profile' | grep -v '#' | tr -d '[]' | sed 's/profile //'
