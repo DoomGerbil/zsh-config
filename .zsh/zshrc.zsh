@@ -47,6 +47,7 @@ plugins=()
 
 # Install a collection of useful aliases
 plugins+=(aliases)
+plugins+=(alias-finder)
 
 # Completion support for AWS's CLI tool
 plugins+=(aws)
@@ -55,8 +56,20 @@ plugins+=(aws)
 # MacOS: Requires `brew install terminal-notifier`
 plugins+=(bgnotify)
 
+# Homebrew completion
+plugins+=(brew)
+
+# Colorize the output of various commands
+plugins+=(colored-man-pages colorize)
+
 # Let zsh tell you how to install something if you run a command that isn't installed
 plugins+=(command-not-found)
+
+# Copy the path of the current file to the clipboard
+plugins+=(copypath)
+
+# Directory history plugin
+plugins+=(dirhistory)
 
 # Automatically load per-directory settings from `.envrc` files
 # Disabled because this makes my terminal slow
@@ -65,14 +78,18 @@ plugins+=(command-not-found)
 # Completion for Docker and Docker Compose
 plugins+=(docker docker-compose)
 
+# Load environment variables from a `.env` file in the current directory
+plugins+=(dotenv)
+
 # Enables FZF for fuzzy finding.
 plugins+=(fzf)
 
 # Completion support for Google Cloud CLI tools
 plugins+=(gcloud)
 
-# Faster completion for the git CLI
-plugins+=(gitfast)
+# Completion for the git CLI
+plugins+=(git)
+# plugins+=(gitfast)
 
 # Helm completion
 plugins+=(helm)
@@ -87,18 +104,18 @@ plugins+=(macos)
 plugins+=(minikube)
 
 # Completion and aliases for npm/nvm
-# plugins+=(npm nvm)
+plugins+=(npm nvm)
 
 # Completion for Python environment management
 plugins+=(pyenv)
 
-plugins+=(timer)
-
 # Completion for Terraform
 plugins+=(terraform)
 
-# Aliases and completion for Yarn
-# plugins+=(yarn)
+# Corrects previous incorrect console commands
+plugins+=(thefuck)
+
+plugins+=(timer)
 
 # These are manually-managed plugins that enable some suggestions and syntax highlighting
 plugins+=(fzf-tab zsh-autosuggestions zsh-syntax-highlighting)

@@ -3,10 +3,19 @@
 # This file contains a collection of completion settings and custom completions that I use, or have found useful.
 # YMMV, but feel free to use this as a starting point for your own completion settings.
 
+# WIP/TODO: Check completion cache files for file modtimes over a threshold, wipe if old and then rebuild from scratch
+# On macos, these are all equivalent timestamps for the same file:
+# ❯ GetFileInfo -m $ZSHRC/completions/_kpt
+# 12/12/2024 12:29:45
+# ❯ stat -f "%Sm" $ZSHRC/completions/_kpt
+# Dec 12 12:29:45 2024
+# ❯ stat -f "%m" $ZSHRC/completions/_kpt
+# 1734006585
+
 # Define where our completions and zsh functions live and can be loaded from
 local_completions_dir="${ZSHRC}/completions"
 completion_cache_dir="${ZSHRC}/cache"
-FPATH="${local_completions_dir}:${FPATH}:${ZSHRC}/functions"
+FPATH="${local_completions_dir}:${FPATH}:${HOMEBREW_PREFIX}/share/zsh/site-functions/:${ZSHRC}/functions"
 
 # Rebuild the autocomplete cache if it's more than a day old
 find ~/.zcompdump -type f -mtime +1d -exec rm -f {} \;
@@ -108,7 +117,7 @@ command -v "pack" >"/dev/null" && \
   source ~/.pack/completion.zsh
 
 # ADR Tools completion, if installed via Homebrew
-adr_tools_completion_path="/opt/homebrew/etc/bash_completion.d/adr-tools"
+adr_tools_completion_path="${HOMEBREW_PREFIX}/etc/bash_completion.d/adr-tools"
 [[ -r "${adr_tools_completion_path}" ]] && \
   source "${adr_tools_completion_path}"
 
