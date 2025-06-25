@@ -68,8 +68,9 @@ plugins+=(command-not-found)
 # Copy the path of the current file to the clipboard
 plugins+=(copypath)
 
-# Directory history plugin
-plugins+=(dirhistory)
+# # Directory history plugin
+# Disabled because it stomps on word-based kb nav
+# plugins+=(dirhistory)
 
 # Automatically load per-directory settings from `.envrc` files
 # Disabled because this makes my terminal slow

@@ -18,7 +18,7 @@ completion_cache_dir="${ZSHRC}/cache"
 FPATH="${local_completions_dir}:${FPATH}:${HOMEBREW_PREFIX}/share/zsh/site-functions/:${ZSHRC}/functions"
 
 # Rebuild the autocomplete cache if it's more than a day old
-find ~/.zcompdump -type f -mtime +1d -exec rm -f {} \;
+find ~/.zcompdump -type f -mtime +1d -exec rm -f {} \; 2>/dev/null
 
 autoload bashcompinit; bashcompinit
 autoload -Uz compinit; compinit
