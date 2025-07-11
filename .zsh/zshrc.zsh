@@ -90,7 +90,7 @@ plugins+=(gcloud)
 
 # Completion for the git CLI
 plugins+=(git)
-# plugins+=(gitfast)
+plugins+=(gitfast)
 
 # Helm completion
 plugins+=(helm)
@@ -157,6 +157,9 @@ export CLOUDSDK_PYTHON_SITEPACKAGES=1
 if [ -r "${HOME}/.ssh/agent" ]; then
   export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
 fi
+
+export PAGER="bat"
+export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 # Only enable iTerm integration if running in iTerm
 if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
