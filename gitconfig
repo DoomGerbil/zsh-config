@@ -1,4 +1,19 @@
 # This is Git's per-user configuration file.
+
+# Use this file as base defaults, and override individual settings by:
+# 1. Creating another .gitconfig file wherever you want it to live (/path/to/custom/.gitconfig)
+#
+# 2. At the top of the secondary gitconfig, include this base gitconfig:
+#   [include]
+#     path = /Users/foo/.gitconfig
+#
+# 3. In the secondary gitconfig, override whatever specific options you like. For example:
+#   [user]
+#     email = different.email@otherdomain.com
+#
+# 4. In each repo where you want to use custom settings, include the override file:
+#   git config --local include.path "/path/to/custom/.gitconfig"
+
 [user]
 	name = NOT A REALNAME
 	email = DUMMY@GMAIL.COM
