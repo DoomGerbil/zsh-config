@@ -73,14 +73,15 @@ plugins+=(copypath)
 # plugins+=(dirhistory)
 
 # Automatically load per-directory settings from `.envrc` files
-# Disabled because this makes my terminal slow
-# plugins+=(direnv)
+# Testing disabling because it felt like it made my terminal slow
+plugins+=(direnv)
 
 # Completion for Docker and Docker Compose
 plugins+=(docker docker-compose)
 
 # Load environment variables from a `.env` file in the current directory
-plugins+=(dotenv)
+# Disabled because this is dupe functionality with direnv
+# plugins+=(dotenv)
 
 # Enables FZF for fuzzy finding.
 plugins+=(fzf)
@@ -103,6 +104,9 @@ plugins+=(macos)
 
 # Completion for minikube
 plugins+=(minikube)
+
+# Mise en place integration
+plugins+=(mise)
 
 # Completion and aliases for npm/nvm
 plugins+=(npm nvm)

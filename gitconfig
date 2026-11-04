@@ -15,50 +15,58 @@
 #   git config --local include.path "/path/to/custom/.gitconfig"
 
 [user]
-	name = NOT A REALNAME
-	email = DUMMY@GMAIL.COM
-
-[push]
-	default = current
-	autoSetupRemote = true
-
-[difftool "vscode"]
-    cmd = code --wait --diff $LOCAL $REMOTE
-
-[diff]
-    tool = vscode
-
-[merge]
-	conflictStyle = diff3
-	renamelimit = 0
-	tool = smerge
-
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-
-[pull]
-	rebase = true
-
-[rebase]
-	autoStash = true
-
-[core]
-	excludesfile = ~/.gitignore
-	editor = vim
+  name = NOT A REALNAME
+  email = DUMMY@GMAIL.COM
 
 [alias]
-	co = checkout
-	b = branch
-	ca = commit --amend -a --no-edit
-	cm = commit -m
-	cob = checkout -b
-	cod = checkout -
-	com = checkout main
-	coms = checkout master
-	s = status
-	stag = tag -s
-	undo = reset --soft HEAD~1
-	p = pull --rebase --autostash
+  a = add
+  b = branch
+  co = checkout
+  ca = commit --amend -a --no-edit
+  cm = commit -m
+  cob = checkout -b
+  cod = checkout -
+  com = checkout main
+  coms = checkout master
+  last = diff HEAD^ # diff last committed change
+  nb = checkout -b  # new branch
+  recent-branches = !git for-each-ref --count=15 --sort=-committerdate refs/heads/ --format='%(refname:short)'
+  ra = rebase --abort
+  rc = rebase --continue
+  rs = rebase --skip
+  s = status
+  stag = tag -s
+  undo = reset --soft HEAD~1
+  p = pull --rebase --autostash
+  ps = push
+
+[core]
+  excludesfile = ~/.gitignore
+  # editor = vim
+
+# [difftool "vscode"]
+#     cmd = code --wait --diff $LOCAL $REMOTE
+
+# [diff]
+#     tool = vscode
+
+# [merge]
+#   conflictStyle = diff3
+#   renamelimit = 0
+  # tool = smerge
+
+[pull]
+  rebase = true
+
+[push]
+  default = current
+  autoSetupRemote = true
+
+[rebase]
+  autoStash = true
+
+[url "git@github.com:"]
+  insteadOf = https://github.com/
 
 ##################
 ################## This entire section is related to configuring commit/tag signing ##################
@@ -66,15 +74,15 @@
 
 # When uncommented, this block enables signing all commits and tags
 [commit]
-	gpgsign = true
+  gpgsign = true
 [tag]
-	gpgsign = true
-	forceSignAnnotated = true
+  gpgsign = true
+  forceSignAnnotated = true
 
 # When uncommented, makes git use the system ssh binary instead of the Brew binary.
 # This is sometimes required or broken, depending on the version of macos, brew SSH, etc. DIAF Apple.
 # [core]
-# 	sshCommand = /usr/local/bin/ssh
+#   sshCommand = /usr/local/bin/ssh
 
 ####
 ## You can only enable at most _one_ of the below sections, or Bad Things may happen.
@@ -82,27 +90,106 @@
 
 # Option 1: SSH Key signing with a standard SSH key
 # [gpg]
-# 	format = ssh
+#   format = ssh
 # [gpg "ssh"]
-# 	allowedSignersFile = ~/.ssh/allowed_signers
+#   allowedSignersFile = ~/.ssh/allowed_signers
 # [user]
-# 	signingkey = $KEY_TYPE $KEY_SIGNATURE $KEY_EMAIL
+#   signingkey = $KEY_TYPE $KEY_SIGNATURE $KEY_EMAIL
 
 # Option 2: SSH Key signing with a security key (Yubikey, Nitrokey, etc)
 [gpg]
-	format = ssh
+  format = ssh
 [gpg "ssh"]
-	allowedSignersFile = ~/.ssh/allowed_signers
+  allowedSignersFile = ~/.ssh/allowed_signers
 [user]
-	# Note that unlike other key formats, for THIS FORMAT ONLY, a filepath is required instead of a signature. Sigh
-	signingkey = ~/.ssh/id_ed25519_sk.pub
+  # Note that unlike other key formats, for THIS FORMAT ONLY, a filepath is required instead of a signature. Sigh
+  signingkey = ~/.ssh/id_ed25519_sk.pub
 
 # Option 3: GPG Key signing with a GPG key
 # [gpg]
-# 	format = openpgp
+#   format = openpgp
 # [user]
-# 	signingkey = $GPG_KEY_ID
+#   signingkey = $GPG_KEY_ID
 
 ##################
 ################## This entire section is related to configuring commit/tag signing ##################
 ##################
+
+## TESTING BLOCK ##
+[apply]
+  whitespace = nowarn
+
+[branch]
+  autosetupmerge = true
+  autosetuprebase = always
+
+[color]
+  ui = always
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red
+  new = green
+
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
+
+[core]
+  autocrlf = false
+  safecrlf = false
+  eol = lf
+  editor = code --new-window --wait
+  # excludesfile = ~/.gitignore.user
+
+[diff]
+  # Git diff will use (i)ndex, (w)ork tree, (c)ommit and (o)bject
+  # instead of a/b/c/d as prefixes for patches
+  mnemonicprefix = true
+  algorithm = patience
+  compactionHeuristic = true
+  indentHeuristic = on
+  tool = vscode
+
+[difftool "vscode"]
+  cmd = code --wait --diff $LOCAL $REMOTE
+
+[fetch]
+  prune = 1
+
+[format]
+  pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
+
+[gui]
+  tabsize = 2
+
+[i18n]
+  filesEncoding = utf-8
+
+[merge]
+  summary = true
+  tool = vscode
+  verbosity = 1
+
+[mergetool "vscode"]
+  cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+
+[mergetool]
+  prompt = false
+
+[protocol]
+  version = 2
+
+[rerere]
+  # Remember my merges
+  # http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/
+  enabled = true
+## TESTING BLOCK ##

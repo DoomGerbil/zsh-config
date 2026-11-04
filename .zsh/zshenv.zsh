@@ -35,6 +35,7 @@ pathprepend "${GOBIN}"
 pathprepend "${HOMEBREW_PREFIX}/bin"
 # Personal binaries
 pathprepend "${HOME}/bin"
+pathprepend "${HOME}/.local/bin"
 
 # And here we add lower-priority paths to the end
 # Kubectl plugins via Krew
