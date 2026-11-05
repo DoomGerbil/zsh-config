@@ -98,13 +98,22 @@ fi
 
 # GitHub's hub CLI - handled by OMZSH plugin
 
-# JFrog CLI (Artifactory) - if installed, rebuild the completion index and
-command -v "jf" >"/dev/null" && \
-  jf completion zsh > "${local_completions_dir}/_jf"
+# Regenerate a tool's completion file if the tool is installed and the file is missing or over a day old.
+# Usage: refresh_completion <command> <command args that print zsh completion>
+refresh_completion() {
+  local cmd="${1}"
+  local target="${local_completions_dir}/_${cmd}"
+  (( ${+commands[${cmd}]} )) || return 0
+  local -a fresh=( ${target}(N.mh-24) )
+  (( ${#fresh} )) && return 0
+  "$@" > "${target}"
+}
+
+# JFrog CLI (Artifactory) - if installed, rebuild the completion index
+refresh_completion jf completion zsh
 
 # KPT - if installed, rebuild the completion index
-command -v "kpt" >"/dev/null" && \
-  kpt completion zsh > "${local_completions_dir}/_kpt"
+refresh_completion kpt completion zsh
 
 # Kubectl - handled by OMZSH plugin
 zstyle ':completion:*:*:kubectl:*' list-grouped false
@@ -118,16 +127,13 @@ zstyle ':completion:*:*:kubectl:*' list-grouped false
   && curl -Ssl https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/_kubectx.zsh -o "${local_completions_dir}/_kubectx"
 
 # Kustomize - if installed, rebuild the completion index
-command -v "kustomize" >"/dev/null" && \
-  kustomize completion zsh > "${local_completions_dir}/_kustomize"
+refresh_completion kustomize completion zsh
 
 # OpenShift CLI (oc) - if installed, rebuild the completion index
-command -v "oc" >"/dev/null" && \
-  oc completion zsh > "${local_completions_dir}/_oc"
+refresh_completion oc completion zsh
 
 # Stern (K8S log tailer) - if installed, rebuild the completion index
-command -v "stern" >"/dev/null" && \
-  stern --completion zsh > "${local_completions_dir}/_stern"
+refresh_completion stern --completion zsh
 
 # Buildpack CLI (pack) - if installed, rebuild the completion index
 command -v "pack" >"/dev/null" && \
@@ -145,6 +151,11 @@ aws-profiles() {
   }
 
 set-aws-profile() {
+  [[ -z "${1}" ]] && {
+    echo "${0} <AWS profile> [AWS region]";
+    return 1;
+  }
+
   local aws_profile=$1
   local aws_region_default="${$(aws configure get region --profile ${aws_profile}):-eu-west-2}"
   local aws_region=${2:-${aws_region_default}}

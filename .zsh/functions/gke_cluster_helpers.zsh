@@ -36,7 +36,7 @@ function describe_cluster {
   }
 
   # Fetch the cluster data and run it through jq. If the cluster exists, print the important bits.
-  $("gcloud container clusters describe --project ${project} --region ${location} ${cluster} --format=json") | \
+  gcloud container clusters describe --project "${project}" --region "${location}" "${cluster}" --format=json | \
       jq --null-input --exit-status --raw-output \
         "inputs | if .status == \"RUNNING\" then \"Cluster: ${project}/${cluster} - started \(.createTime)\" else empty end" && \
     echo "View console: https://console.cloud.google.com/kubernetes/clusters/details/${location}/${cluster}?project=${project}\n"

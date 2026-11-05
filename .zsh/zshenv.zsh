@@ -24,10 +24,13 @@ if [[ -d "/Library/Frameworks/Python.framework/Versions/Current/bin" ]]; then
   export PY_SYS_PACKAGES="/Library/Frameworks/Python.framework/Versions/Current/bin"
   pathprepend "${PY_SYS_PACKAGES}"
 fi
-if [[ -d "${HOME}/Library/Python/3.9/bin" ]]; then
-  export PY_USER_PACKAGES="${HOME}/Library/Python/3.9/bin"
+# Use the newest versioned user packages dir (n = numeric sort, so 3.10 sorts after 3.9)
+py_user_dirs=( "${HOME}"/Library/Python/*/bin(N/nOn) )
+if (( ${#py_user_dirs} )); then
+  export PY_USER_PACKAGES="${py_user_dirs[1]}"
   pathprepend "${PY_USER_PACKAGES}"
 fi
+unset py_user_dirs
 
 ## Do some arbitrary PATH mangling - these are prepended, so they are added here in reverse priority order
 
