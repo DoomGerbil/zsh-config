@@ -7,7 +7,7 @@
 #   [include]
 #     path = /Users/foo/.gitconfig
 #
-# 3. In the secondary gitconfig, override whatever specific options you like. For example:
+# 3. In the secondary gitconfig, override whatever specific options you like.
 #   [user]
 #     email = different.email@otherdomain.com
 #
@@ -42,21 +42,26 @@
 
 [core]
   excludesfile = ~/.gitignore
-  # editor = vim
+  editor = vim
+  pager = delta
 
-# [difftool "vscode"]
-#     cmd = code --wait --diff $LOCAL $REMOTE
+[interactive]
+    diffFilter = delta --color-only
 
-# [diff]
-#     tool = vscode
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    dark = true      # or light = true, or omit for auto-detection
 
-# [merge]
-#   conflictStyle = diff3
-#   renamelimit = 0
+[merge]
+  conflictStyle = diff3
+  # renamelimit = 0
   # tool = smerge
 
 [pull]
   rebase = true
+
+[fetch]
+  prune = true
 
 [push]
   default = current
@@ -147,7 +152,7 @@
   autocrlf = false
   safecrlf = false
   eol = lf
-  editor = code --new-window --wait
+  # editor = code --new-window --wait
   # excludesfile = ~/.gitignore.user
 
 [diff]
@@ -161,9 +166,6 @@
 
 [difftool "vscode"]
   cmd = code --wait --diff $LOCAL $REMOTE
-
-[fetch]
-  prune = 1
 
 [format]
   pretty = format:%C(blue)%ad%Creset %C(yellow)%h%C(green)%d%Creset %C(blue)%s %C(magenta) [%an]%Creset
@@ -192,4 +194,10 @@
   # Remember my merges
   # http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/
   enabled = true
+
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 ## TESTING BLOCK ##

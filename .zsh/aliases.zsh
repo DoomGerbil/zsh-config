@@ -15,7 +15,8 @@ alias k='kubectl'
 compdef k=kubectl
 
 alias kx='kubectx'
-compdef kubectx
+alias kctx='kubectx'
+compdef kx=kubectx
 compdef kctx=kubectx
 
 alias ks='kubens'
@@ -23,7 +24,7 @@ compdef ks=kubens
 
 # Other stuff
 alias bazel='bazelisk'
-compdef bazelisk=bazel
+compdef bazel=bazelisk
 
 # Configuration required for granted/assume to work correctly
 alias assume="source assume"

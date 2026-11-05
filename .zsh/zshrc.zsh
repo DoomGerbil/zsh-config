@@ -4,7 +4,8 @@
 # This file is obviously not part of the config distribution, so it may not exist
 USER_SECRETS_FILE="${USER_SECRETS_FILE:-${HOME}/.secrets.zsh}"
 if [[ -r "${USER_SECRETS_FILE}" ]]; then
-  if find ${USER_SECRETS_FILE} -type f -perm +044 | grep "${USER_SECRETS_FILE}"; then
+  # if find ${USER_SECRETS_FILE} -type f -perm +044 | grep "${USER_SECRETS_FILE}"; then
+  if [[ -n $f(#qN.A) || -n $f(#qN.R) ]]; then
     echo "PROBLEM: User secrets file is readable by other users"
     echo "Skipping until you fix it: chmod 0600 ${USER_SECRETS_FILE}"
   else
@@ -132,7 +133,7 @@ if command -v "fzf" >"/dev/null"; then
   export FZF_BASE="/usr/local/opt/fzf"
   export DISABLE_FZF_AUTO_COMPLETION="false"
   export DISABLE_FZF_KEY_BINDINGS="false"
-  export FZF_DEFAULT_OPTS="--height 40% --border"
+  export FZF_DEFAULT_OPTS="--height 100% --border"
 
   # If ripgrep is installed (brew install ripgrep) configure fzf to use it
   if command -v "rg" >"/dev/null"; then
@@ -162,6 +163,10 @@ if [ -r "${HOME}/.ssh/agent" ]; then
   export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
 fi
 
+if command -v "batcat" >"/dev/null" && ! command -v "bat" >"/dev/null"; then
+  alias bat="batcat"
+fi
+
 export PAGER="bat"
 export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
@@ -171,5 +176,7 @@ if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
     source "${HOME}/.iterm2_shell_integration.zsh"
 fi
 
-# Enable SSH to use credentials stored on security keys.
-export SSH_SK_PROVIDER=/usr/local/lib/libsk-libfido2.dylib
+# On Mac, enable SSH to use credentials stored on security keys, if the lib is installed.
+if [[ $(uname -s) == "Darwin" && -x /usr/local/lib/libsk-libfido2.dylib ]]; then
+  export SSH_SK_PROVIDER=/usr/local/lib/libsk-libfido2.dylib
+fi

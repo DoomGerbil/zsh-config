@@ -15,10 +15,16 @@
 # Define where our completions and zsh functions live and can be loaded from
 local_completions_dir="${ZSHRC}/completions"
 completion_cache_dir="${ZSHRC}/cache"
-FPATH="${local_completions_dir}:${FPATH}:${HOMEBREW_PREFIX}/share/zsh/site-functions/:${ZSHRC}/functions"
+FPATH="${local_completions_dir}:${FPATH}:${ZSHRC}/functions"
+
+# If Brew is installed, use its site-functions too
+if [[ -d "${HOMEBREW_PREFIX}/share/zsh/site-functions" ]]; then
+  FPATH="${FPATH}:${HOMEBREW_PREFIX}/share/zsh/site-functions"
+fi
 
 # Rebuild the autocomplete cache if it's more than a day old
-find ~/.zcompdump -type f -mtime +1d -exec rm -f {} \; 2>/dev/null
+# find ~/.zcompdump -type f -mtime +1d -exec rm -f {} \; 2>/dev/null
+rm -f ~/.zcompdump(N.mh+24)
 
 autoload bashcompinit; bashcompinit
 autoload -Uz compinit; compinit
@@ -27,7 +33,8 @@ autoload -Uz compinit; compinit
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
 
 # partial completion suggestions
-zstyle ':completion:*' list-suffixeszstyle ':completion:*' expand prefix suffix
+zstyle ':completion:*' list-suffixes
+zstyle ':completion:*' expand prefix suffix
 
 # Use completion caching
 # Guarantee that the cache directory exists, otherwise things get unhappy
@@ -45,7 +52,7 @@ zstyle ':completion:*' add-space true
 
 # AWS - handled by OMZSH plugin
 # Uncomment this line to manually install AWS CLI completion
-complete -C '/usr/local/bin/aws_completer' aws
+# complete -C '/usr/local/bin/aws_completer' aws
 
 # Bazel - handled by OMZSH plugin
 
@@ -63,8 +70,12 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
 zstyle ':completion:*' menu no
-# preview directory's content with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+
+# If eza is installed, use it to preview directory's content on completion
+if command -v "eza" >"/dev/null"; then
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+fi
+
 # switch group using `<` and `>`
 zstyle ':fzf-tab:*' switch-group '<' '>'
 # set the maximum number of items to show in the completion list

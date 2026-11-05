@@ -11,6 +11,8 @@ p10kdir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
   (echo "Powerlevel10K not found, installing..." &&
     git clone --depth=1 "https://github.com/romkatv/powerlevel10k.git" "${p10kdir}")
 
+# TODO: Tool installation is currently MacOS only, add Linux/WSL support TBI
+
 # Install fzf if not present
 command -v "fzf" >"/dev/null" ||
   (echo "FZF not found, installing..." &&
@@ -30,6 +32,11 @@ command -v "terminal-notifier" >"/dev/null" ||
 command -v "eza" >"/dev/null" ||
   (echo "eza not found, installing..." &&
     brew install eza)
+
+# Install git-delta if not present
+command -v "delta" >"/dev/null" ||
+  (echo "git-delta not found, installing..." &&
+    brew install git-delta)
 
 # Install libfido2 and related formulae if not present to support Yubikey/security key
 libfido_installed=$(brew list | grep "^libfido2$")
