@@ -4,8 +4,10 @@
 # This file is obviously not part of the config distribution, so it may not exist
 USER_SECRETS_FILE="${USER_SECRETS_FILE:-${HOME}/.secrets.zsh}"
 if [[ -r "${USER_SECRETS_FILE}" ]]; then
-  # if find ${USER_SECRETS_FILE} -type f -perm +044 | grep "${USER_SECRETS_FILE}"; then
-  if [[ -n $f(#qN.A) || -n $f(#qN.R) ]]; then
+  # Glob qualifiers: A = group-readable, R = world-readable
+  # Using an array, because qualifiers inside [[ ]] require EXTENDED_GLOB
+  secrets_readable_by_others=( ${USER_SECRETS_FILE}(N.A) ${USER_SECRETS_FILE}(N.R) )
+  if (( ${#secrets_readable_by_others} )); then
     echo "PROBLEM: User secrets file is readable by other users"
     echo "Skipping until you fix it: chmod 0600 ${USER_SECRETS_FILE}"
   else
@@ -50,8 +52,14 @@ plugins=()
 plugins+=(aliases)
 plugins+=(alias-finder)
 
+# ASDF version manager - if installed, load it
+# plugins+=(asdf)
+
 # Completion support for AWS's CLI tool
 plugins+=(aws)
+
+# Support for Bazel build tool - uncomment if needed.
+# plugins+=(bazel)
 
 # Automatically pop up a notification when a long-running process finishes
 # MacOS: Requires `brew install terminal-notifier`
@@ -66,16 +74,19 @@ plugins+=(colored-man-pages colorize)
 # Let zsh tell you how to install something if you run a command that isn't installed
 plugins+=(command-not-found)
 
+# Enable a collection of common aliases for various commands
+# plugins+=(common-aliases)
+
 # Copy the path of the current file to the clipboard
 plugins+=(copypath)
-
-# # Directory history plugin
-# Disabled because it stomps on word-based kb nav
-# plugins+=(dirhistory)
 
 # Automatically load per-directory settings from `.envrc` files
 # Testing disabling because it felt like it made my terminal slow
 plugins+=(direnv)
+
+# # Directory history plugin
+# Disabled because it stomps on word-based kb nav
+# plugins+=(dirhistory)
 
 # Completion for Docker and Docker Compose
 plugins+=(docker docker-compose)
@@ -83,6 +94,9 @@ plugins+=(docker docker-compose)
 # Load environment variables from a `.env` file in the current directory
 # Disabled because this is dupe functionality with direnv
 # plugins+=(dotenv)
+
+# Aliases using eza instead of ls, with completion support
+# plugins+=(eza)
 
 # Enables FZF for fuzzy finding.
 plugins+=(fzf)
@@ -99,12 +113,13 @@ plugins+=(helm)
 
 # Aliases and completion for Kubectl
 plugins+=(kubectl)
+# plugins+=(kubectx)
 
 # MacOS system shortcuts
 plugins+=(macos)
 
 # Completion for minikube
-plugins+=(minikube)
+# plugins+=(minikube)
 
 # Mise en place integration
 plugins+=(mise)
@@ -112,8 +127,16 @@ plugins+=(mise)
 # Completion and aliases for npm/nvm
 plugins+=(npm nvm)
 
-# Completion for Python environment management
-plugins+=(pyenv)
+# Completion for Python bits
+plugins+=(python pyenv pylint)
+plugins+=(pip pipenv)
+plugins+=(uv uv-env)
+
+# Completion for pre-commit
+# plugins+=(pre-commit)
+
+# SSH tools and helpers
+# plugins+=(ssh ssh-agent)
 
 # Completion for Terraform
 plugins+=(terraform)
@@ -123,8 +146,12 @@ plugins+=(thefuck)
 
 plugins+=(timer)
 
+# VSCode integration
+plugins+=(vscode)
+
 # These are manually-managed plugins that enable some suggestions and syntax highlighting
 plugins+=(fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
+# plugins+=(zsh-interactive-cd)
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
@@ -162,12 +189,14 @@ if [ -r "${HOME}/.ssh/agent" ]; then
   export SSH_AUTH_SOCK="${HOME}/.ssh/agent"
 fi
 
-if command -v "batcat" >"/dev/null" && ! command -v "bat" >"/dev/null"; then
-  alias bat="batcat"
+# Use bat as the pager if installed. Debian/Ubuntu ship it as `batcat`.
+# PAGER/MANPAGER are read by other programs, so they need the real binary name, not an alias.
+bat_bin="$(command -v bat || command -v batcat)"
+if [[ -n "${bat_bin}" ]]; then
+  [[ "${bat_bin:t}" == "batcat" ]] && alias bat="batcat"
+  export PAGER="${bat_bin:t}"
+  export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | ${bat_bin:t} -p -lman'"
 fi
-
-export PAGER="bat"
-export MANPAGER="sh -c 'sed -u -e \"s/\\x1B\[[0-9;]*m//g; s/.\\x08//g\" | bat -p -lman'"
 
 # Only enable iTerm integration if running in iTerm
 if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
@@ -176,6 +205,7 @@ if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
 fi
 
 # On Mac, enable SSH to use credentials stored on security keys, if the lib is installed.
-if [[ $(uname -s) == "Darwin" && -r /usr/local/lib/libsk-libfido2.dylib ]]; then
+# This stays in /usr/local/lib even with Apple Silicon Homebrew, as ssh-agent only loads providers from /usr/lib* and /usr/local/lib* by default.
+if [[ $OSTYPE == darwin* && -r /usr/local/lib/libsk-libfido2.dylib ]]; then
   export SSH_SK_PROVIDER=/usr/local/lib/libsk-libfido2.dylib
 fi
