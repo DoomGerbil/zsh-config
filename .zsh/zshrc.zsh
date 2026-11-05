@@ -130,7 +130,6 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # Sets up FZF fuzzy finder if it's installed (brew install fzf)
 if command -v "fzf" >"/dev/null"; then
-  export FZF_BASE="/usr/local/opt/fzf"
   export DISABLE_FZF_AUTO_COMPLETION="false"
   export DISABLE_FZF_KEY_BINDINGS="false"
   export FZF_DEFAULT_OPTS="--height 100% --border"
@@ -177,6 +176,6 @@ if [[ $TERM_PROGRAM == "iTerm.app" ]]; then
 fi
 
 # On Mac, enable SSH to use credentials stored on security keys, if the lib is installed.
-if [[ $(uname -s) == "Darwin" && -x /usr/local/lib/libsk-libfido2.dylib ]]; then
+if [[ $(uname -s) == "Darwin" && -r /usr/local/lib/libsk-libfido2.dylib ]]; then
   export SSH_SK_PROVIDER=/usr/local/lib/libsk-libfido2.dylib
 fi

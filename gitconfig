@@ -195,9 +195,10 @@
   # http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/
   enabled = true
 
-[filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
+# If you have to use LFS, I pity you. Uncomment the below block to enable LFS support. Otherwise, leave it commented out.
+# [filter "lfs"]
+#   clean = git-lfs clean -- %f
+#   smudge = git-lfs smudge -- %f
+#   process = git-lfs filter-process
+#   required = true
 ## TESTING BLOCK ##

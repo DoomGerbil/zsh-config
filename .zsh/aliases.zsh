@@ -24,7 +24,7 @@ compdef ks=kubens
 
 # Other stuff
 alias bazel='bazelisk'
-compdef bazel=bazelisk
+compdef bazelisk=bazel
 
 # Configuration required for granted/assume to work correctly
 alias assume="source assume"

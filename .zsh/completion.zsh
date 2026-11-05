@@ -81,11 +81,18 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 # set the maximum number of items to show in the completion list
 zstyle ':completion:*' list-max-items 20
 # Git specific completion hints
-zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff $word | delta'
 zstyle ':fzf-tab:complete:git-log:*' fzf-preview 'git log --color=always $word'
-zstyle ':fzf-tab:complete:git-help:*' fzf-preview 'git help $word | bat -plman --color=always'
-zstyle ':fzf-tab:complete:git-show:*' fzf-preview 'case "$group" in "commit tag") git show --color=always $word ;; *) git show --color=always $word | delta ;; esac'
-zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview 'case "$group" in "modified file") git diff $word | delta ;; "recent commit object name") git show --color=always $word | delta ;; *) git log --color=always $word ;; esac'
+
+if command -v "bat" >"/dev/null"; then
+  zstyle ':fzf-tab:complete:git-help:*' fzf-preview 'git help $word | bat -plman --color=always'
+fi
+
+# Use git-delta to preview git diffs in fzf-tab, if installed
+if command -v "delta" >"/dev/null"; then
+  zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff $word | delta'
+  zstyle ':fzf-tab:complete:git-show:*' fzf-preview 'case "$group" in "commit tag") git show --color=always $word ;; *) git show --color=always $word | delta ;; esac'
+  zstyle ':fzf-tab:complete:git-checkout:*' fzf-preview 'case "$group" in "modified file") git diff $word | delta ;; "recent commit object name") git show --color=always $word | delta ;; *) git log --color=always $word ;; esac'
+fi
 
 # gcloud/gsutil - handled by OMZSH plugin
 
@@ -139,6 +146,9 @@ aws-profiles() {
 
 set-aws-profile() {
   local aws_profile=$1
+  local aws_region_default="${$(aws configure get region --profile ${aws_profile}):-eu-west-2}"
+  local aws_region=${2:-${aws_region_default}}
+
   export AWS_PROFILE=${aws_profile}
-  export AWS_REGION=eu-west-2
+  export AWS_REGION=${aws_region}
 }
