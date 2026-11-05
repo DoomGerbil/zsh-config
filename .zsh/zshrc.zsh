@@ -50,13 +50,19 @@ plugins=()
 
 # Install a collection of useful aliases
 plugins+=(aliases)
+
 plugins+=(alias-finder)
+zstyle ':omz:plugins:alias-finder' autoload yes # disabled by default
+zstyle ':omz:plugins:alias-finder' longer yes # disabled by default
+zstyle ':omz:plugins:alias-finder' exact yes # disabled by default
+zstyle ':omz:plugins:alias-finder' cheaper yes # disabled by default
+
 
 # ASDF version manager - if installed, load it
 # plugins+=(asdf)
 
 # Completion support for AWS's CLI tool
-plugins+=(aws)
+# plugins+=(aws)
 
 # Support for Bazel build tool - uncomment if needed.
 # plugins+=(bazel)
@@ -97,6 +103,10 @@ plugins+=(docker docker-compose)
 
 # Aliases using eza instead of ls, with completion support
 # plugins+=(eza)
+# zstyle ':omz:plugins:eza' 'git-status' yes
+# zstyle ':omz:plugins:eza' 'show-group' smart
+
+
 
 # Enables FZF for fuzzy finding.
 plugins+=(fzf)
@@ -113,7 +123,7 @@ plugins+=(helm)
 
 # Aliases and completion for Kubectl
 plugins+=(kubectl)
-# plugins+=(kubectx)
+plugins+=(kubectx)
 
 # MacOS system shortcuts
 plugins+=(macos)
@@ -125,7 +135,7 @@ plugins+=(macos)
 plugins+=(mise)
 
 # Completion and aliases for npm/nvm
-plugins+=(npm nvm)
+# plugins+=(npm nvm)
 
 # Completion for Python bits
 plugins+=(python pyenv pylint)
@@ -133,10 +143,16 @@ plugins+=(pip pipenv)
 plugins+=(uv uv-env)
 
 # Completion for pre-commit
-# plugins+=(pre-commit)
+plugins+=(pre-commit)
 
 # SSH tools and helpers
-# plugins+=(ssh ssh-agent)
+plugins+=(ssh ssh-agent)
+zstyle :omz:plugins:ssh-agent agent-forwarding yes
+zstyle :omz:plugins:ssh-agent honor-existing yes
+zstyle :omz:plugins:ssh-agent quiet yes
+zstyle :omz:plugins:ssh-agent lazy yes
+zstyle :omz:plugins:ssh-agent ssh-add-args --apple-load-keychain
+
 
 # Completion for Terraform
 plugins+=(terraform)
@@ -151,7 +167,6 @@ plugins+=(vscode)
 
 # These are manually-managed plugins that enable some suggestions and syntax highlighting
 plugins+=(fzf-tab zsh-autosuggestions zsh-syntax-highlighting)
-# plugins+=(zsh-interactive-cd)
 
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
@@ -166,9 +181,6 @@ if command -v "fzf" >"/dev/null"; then
       export FZF_DEFAULT_COMMAND="rg --files --no-ignore-vcs --hidden"
   fi
 fi
-
-# Activate oh-my-zsh
-source "${ZSH}/oh-my-zsh.sh"
 
 # Configure auto-completion
 userCompletionFile="${HOME}/.zsh/completion.zsh"
@@ -209,3 +221,10 @@ fi
 if [[ $OSTYPE == darwin* && -r /usr/local/lib/libsk-libfido2.dylib ]]; then
   export SSH_SK_PROVIDER=/usr/local/lib/libsk-libfido2.dylib
 fi
+
+####
+# ACTIVATE OMZSH
+# This basically needs to happen near the end of the chain -
+# after plugins are configured, but before any user-specific aliases or completions are loaded.
+####
+source "${ZSH}/oh-my-zsh.sh"
